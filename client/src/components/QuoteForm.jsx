@@ -151,11 +151,19 @@ export default function QuoteForm({ step, setStep, regNumber }) {
       )}
 
       {step === 3 && (
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          if (validate()) setStep(4);
-        }} className="mt-10 max-w-lg mx-auto space-y-4">
-          <h2 className="text-center text-2xl font-semibold">Your Details</h2>
+        <form
+  onSubmit={(e) => {
+    e.preventDefault();
+    if (validate()) setStep(4);
+    setTimeout(() => {
+      const target = document.getElementById("step3");
+      if (target) target.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }}
+  className="mt-10 max-w-lg mx-auto space-y-4 scroll-mt-28 md:scroll-mt-0"
+  id="step3"
+>
+  <h2 className="text-center text-2xl font-semibold">Your Details</h2>
           <input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full border px-4 py-3 rounded" />
           {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
           <input type="tel" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full border px-4 py-3 rounded" />
@@ -179,8 +187,13 @@ export default function QuoteForm({ step, setStep, regNumber }) {
       )}
 
       {step === 4 && (
-        <form onSubmit={handleSubmit} className="mt-10 max-w-4xl mx-auto space-y-6">
-          <h2 className="text-center text-2xl font-semibold">Workshop or Mobile?</h2>
+        <form
+        onSubmit={handleSubmit}
+        className="mt-10 max-w-4xl mx-auto space-y-6 scroll-mt-28 md:scroll-mt-0"
+        id="step4"
+      >
+        <h2 className="text-center text-2xl font-semibold">Workshop or Mobile?</h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div onClick={() => setDeliveryMethod("workshop")} className={`p-6 border rounded-xl cursor-pointer transition shadow ${deliveryMethod === "workshop" ? "border-black bg-gray-50" : "hover:border-gray-400"}`}>
               <h3 className="font-semibold mb-2">Visit our workshop</h3>
