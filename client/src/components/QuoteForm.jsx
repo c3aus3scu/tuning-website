@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function QuoteForm({ step, setStep }) {
-    const [regNumber, setRegNumber] = useState("");
+export default function QuoteForm({ step, setStep, regNumber }) {
   const [vehicle, setVehicle] = useState({
     make: "BMW",
     model: "320d",
@@ -20,7 +19,7 @@ export default function QuoteForm({ step, setStep }) {
   const [deliveryMethod, setDeliveryMethod] = useState("");
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
-
+  const [submitError, setSubmitError] = useState("");
 
   const serviceOptions = [
     "Stage 1 Remap", "Stage 2 Remap", "DPF Delete", "EGR Delete", "AdBlue Delete",
@@ -30,7 +29,6 @@ export default function QuoteForm({ step, setStep }) {
     "Return To Original", "Datalogging Session", "ECU Cloning",
     "Catalytic Converter Off"
   ];
-
 
   const toggleService = (srv) => {
     setSelectedServices((prev) =>
@@ -65,15 +63,17 @@ export default function QuoteForm({ step, setStep }) {
         message,
         deliveryMethod,
       });
-      setSuccess(true);
-      setTimeout(() => setSuccess(false), 5000); // dispare după 5s
-      setStep(1);
 
+      setSuccess(true);
+      setSubmitError("");
+      setTimeout(() => setSuccess(false), 5000);
+      setStep(1);
     } catch (err) {
       console.error(err);
-      alert("Error sending quote.");
+      setSubmitError("There was a problem sending your quote. Please try again.");
     }
   };
+
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
@@ -206,8 +206,12 @@ export default function QuoteForm({ step, setStep }) {
     ✅ Your quote was successfully sent!
   </div>
 )}
-            {errors.gdpr && <p className="text-red-500 text-sm">{errors.gdpr}</p>}
 
+{submitError && (
+  <div className="mt-4 text-red-600 font-medium text-center transition-all duration-300">
+    ❌ {submitError}
+  </div>
+)}
           </div>
         </form>
       )}
