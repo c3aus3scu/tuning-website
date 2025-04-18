@@ -60,7 +60,7 @@ export default function HeroSection({ setStep, setRegNumber }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-[110%] md:w-auto bg-gray-700 text-white px-10 py-3 rounded-xl font-semibold hover:bg-green-500 transition"
+              className="w-[70%] md:w-auto bg-gray-700 text-white px-10 py-3 rounded-xl font-semibold hover:bg-green-500 transition"
             >
               {loading ? "Checking..." : "Check"}
             </button>

@@ -5,8 +5,7 @@ export default function Header() {
 
   return (
     <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-[95%] max-w-6xl px-4">
-      <header className="bg-white shadow-xl rounded-2xl px-6 py-6 flex items-center justify-between">
-
+      <header className="bg-white shadow-xl rounded-2xl px-6 py-4 md:py-6 flex items-center justify-between">
         {/* Logo */}
         <div className="text-2xl font-bold text-gray-900">mddremap</div>
 
