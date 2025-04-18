@@ -6,7 +6,7 @@ const Quote = require('../models/quote.model');
 const matchServices = (lookup) => {
   const services = [];
 
-  if (lookup.fuelType.toLowerCase() === 'diesel') {
+  if (lookup.fuelType?.toLowerCase() === 'diesel') {
     services.push('DPF Delete', 'EGR Delete');
     if (lookup.euroStatus && parseInt(lookup.euroStatus) < 6) {
       services.push('AdBlue Delete');
@@ -22,9 +22,11 @@ const matchServices = (lookup) => {
 router.post('/lookup', async (req, res) => {
   const { regNumber } = req.body;
 
-  if (!regNumber) return res.status(400).json({ error: 'Registration number is required' });
+  if (!regNumber) {
+    return res.status(400).json({ error: 'Registration number is required' });
+  }
 
-  // Mock response (înlocuit cu apel real API mai târziu)
+  // Simulare răspuns lookup DVLA
   const mockDVLA = {
     make: "BMW",
     model: "320d",
@@ -36,15 +38,16 @@ router.post('/lookup', async (req, res) => {
     year: "2013"
   };
 
-  // Algoritm de matching
   const matchedServices = matchServices(mockDVLA);
 
-  // Salvare în DB
+  // Salvează în DB (opțional)
   const quote = new Quote({
     regNumber,
     lookupData: mockDVLA,
     matchedServices
   });
+
+  await quote.save(); // 💾 important
 
   res.json({ matchedServices, vehicle: mockDVLA });
 });

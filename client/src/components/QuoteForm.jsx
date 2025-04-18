@@ -4,7 +4,14 @@ import axios from "axios";
 export default function QuoteForm() {
   const [step, setStep] = useState(1);
   const [regNumber, setRegNumber] = useState("");
-  const [vehicle, setVehicle] = useState(null);
+  const [vehicle, setVehicle] = useState({
+    make: "BMW",
+    model: "320d",
+    fuelType: "Diesel",
+    engineSize: "2.0",
+    euroStatus: "5",
+    year: "2013",
+  }); // Default BMW data
   const [loading, setLoading] = useState(false);
   const [selectedServices, setSelectedServices] = useState([]);
   const [name, setName] = useState("");
@@ -29,8 +36,7 @@ export default function QuoteForm() {
     setLoading(true);
     setTimeout(async () => {
       try {
-        const res = await axios.post("/api/lookup", { regNumber });
-        setVehicle(res.data.vehicle);
+        // Mocking the response from API
         setStep(2);
       } catch (err) {
         console.error("Lookup error:", err);
