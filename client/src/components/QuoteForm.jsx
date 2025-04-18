@@ -86,6 +86,7 @@ export default function QuoteForm() {
         console.error(err);
         alert("Error sending quote.");
       }
+    }
 
 
   return (
@@ -223,6 +224,6 @@ export default function QuoteForm() {
           <li>Viewing window so you can watch the process</li>
         </ul>
       </div>
-    </div>
+      </div>
   );
 }
