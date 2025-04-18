@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function QuoteForm() {
-  const [step, setStep] = useState(1);
-  const [regNumber, setRegNumber] = useState("");
+export default function QuoteForm({ step, setStep }) {
+    const [regNumber, setRegNumber] = useState("");
   const [vehicle, setVehicle] = useState({
     make: "BMW",
     model: "320d",
@@ -12,7 +11,6 @@ export default function QuoteForm() {
     euroStatus: "5",
     year: "2013",
   });
-  const [loading, setLoading] = useState(false);
   const [selectedServices, setSelectedServices] = useState([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -21,29 +19,17 @@ export default function QuoteForm() {
   const [gdpr, setGdpr] = useState(false);
   const [deliveryMethod, setDeliveryMethod] = useState("");
   const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState(false);
+
 
   const serviceOptions = [
     "Stage 1 Remap", "Stage 2 Remap", "DPF Delete", "EGR Delete", "AdBlue Delete",
     "Swirl Flap Solution", "Diagnostic Trouble Code (DTC) Solution",
     "Remap Solution Without Tune", "AdBlue Solution",
     "Android Auto / Apple CarPlay Module", "AA/ACP Screen Upgrade - Linux OS",
-    "AA/ACP Screen Upgrade - Android OS", "Return To Original",
-    "ECU Cloning", "Catalyc Convertor Off"
+    "AA/ACP Screen Upgrade - Android OS", "Ghost Immobiliser",
+    "Return To Original", "Datalogging Session", "ECU Cloning"
   ];
-
-  const handleLookup = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setTimeout(async () => {
-      try {
-        setStep(2);
-      } catch (err) {
-        console.error("Lookup error:", err);
-      } finally {
-        setLoading(false);
-      }
-    }, 2500);
-  };
 
   const toggleService = (srv) => {
     setSelectedServices((prev) =>
@@ -71,16 +57,17 @@ export default function QuoteForm() {
       await axios.post("/api/quote", {
         regNumber,
         lookupData: vehicle,
-        matchedServices: selectedServices,
+        selectedServices,
         name,
         phone,
         email,
         message,
         deliveryMethod,
-        gdpr,
       });
-      alert("Quote sent!");
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 5000); // dispare după 5s
       setStep(1);
+
     } catch (err) {
       console.error(err);
       alert("Error sending quote.");
@@ -89,97 +76,84 @@ export default function QuoteForm() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
-      {step === 1 && (
+     {step === 1 && (
+  <>
+    {/* Doar informativ - NU mai afișăm formularul */}
+    <div className="mt-12 space-y-4 text-gray-700 max-w-3xl mx-auto text-center" id="regcheck">
+      <h2 className="text-xl font-semibold">How To Use Our Reg Checker</h2>
+      <p>When using our reg checker, the goal is to show what services we offer for your car.</p>
+      <ul className="list-disc list-inside text-left text-sm md:text-base text-center">
+        <li>See which services each of our branches offer</li>
+        <li>Book online & view availability</li>
+        <li>See gains for ECU remaps</li>
+        <li>View pricing for extras</li>
+        <li>Get info about dyno, finance, and mobile/workshop options</li>
+      </ul>
+    </div>
+
+    <div className="mt-20 max-w-4xl mx-auto px-4" id="why">
+      <h2 className="text-2xl font-bold mb-4 text-center">Why Choose Us?</h2>
+      <p className="text-gray-700 text-center mb-6">We use genuine tools and high-calibre tunes to ensure maximum safety when tuning your vehicle.</p>
+      <ul className="list-disc list-inside text-sm md:text-base text-gray-700 space-y-2 text-center">
+        <li>Fully insured, IMI accredited, in-house dyno</li>
+        <li>Custom calibrations for every vehicle</li>
+        <li>Thousands of vehicles tuned since 2016</li>
+        <li>Workshop with waiting area, tea/coffee, comfy sofa</li>
+        <li>Viewing window so you can watch the process</li>
+      </ul>
+    </div>
+  </>
+)}
+
+
+      {step === 2 && (
         <>
-          <div className="text-center mb-8" id="regcheck">
-            <h1 className="text-4xl font-bold mb-2">Auto Tuning Quote</h1>
-            <p className="text-gray-600 mb-6">Enter your registration number to see what services we offer</p>
-            <form onSubmit={handleLookup} className="flex flex-col items-center gap-4">
-              <div className="w-full md:w-1/2">
-                <input
-                  type="text"
-                  value={regNumber}
-                  onChange={(e) => setRegNumber(e.target.value.toUpperCase())}
-                  placeholder="Registration Number"
-                  className="w-full px-5 py-4 text-center border border-gray-300 rounded-xl shadow"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900"
-              >
-                {loading ? "Checking..." : "Check"}
-              </button>
-            </form>
-          </div>
+          <div className="text-center my-10" id="services">
+            <h2 className="text-3xl font-semibold mb-4">Select Your Services</h2>
+            <p className="text-gray-600 mb-6">Choose the services relevant to your car</p>
+            <div className="grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {serviceOptions.map((srv, idx) => (
+                <div
+                  key={idx}
+                  className={`border rounded-xl p-4 text-center cursor-pointer transition ${
+                    selectedServices.includes(srv)
+                      ? "bg-gray-100 border-black scale-[1.02]"
+                      : "hover:border-gray-400"
+                  }`}
+                  onClick={() => toggleService(srv)}
+                >
+                  <p className="font-medium">{srv}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 flex justify-center">
+            <button
+  onClick={() => {
+    if (selectedServices.length > 0) {
+      setStep(3);
+    }
+  }}
+  className={`px-8 py-3 rounded-lg text-white transition ${
+    selectedServices.length === 0
+      ? "bg-black"
+      : "bg-black hover:bg-gray-900"
+  }`}
+>
+  Continue
+</button>
 
-          <div className="mt-12 space-y-4 text-gray-700 max-w-3xl mx-auto text-center">
-            <h2 className="text-xl font-semibold">How To Use Our Reg Checker</h2>
-            <p>When using our reg checker, the goal is to show what services we offer for your car.</p>
-            <ul className="list-disc list-inside text-left text-sm md:text-base text-center">
-              <li>See which services each of our branches offer</li>
-              <li>Book online & view availability</li>
-              <li>See gains for ECU remaps</li>
-              <li>View pricing for extras</li>
-              <li>Get info about dyno, finance, and mobile/workshop options</li>
-            </ul>
-          </div>
 
-          <div className="mt-20 max-w-4xl mx-auto px-4" id="why">
-            <h2 className="text-2xl font-bold mb-4 text-center">Why Choose Us?</h2>
-            <p className="text-gray-700 text-center mb-6">We use genuine tools and high-calibre tunes to ensure maximum safety when tuning your vehicle.</p>
-            <ul className="list-disc list-inside text-sm md:text-base text-gray-700 space-y-2 text-center">
-              <li>Fully insured, IMI accredited, in-house dyno</li>
-              <li>Custom calibrations for every vehicle</li>
-              <li>Thousands of vehicles tuned since 2016</li>
-              <li>Workshop with waiting area, tea/coffee, comfy sofa</li>
-              <li>Viewing window so you can watch the process</li>
-            </ul>
+
+            </div>
           </div>
         </>
       )}
 
-      {step === 2 && (
-        <div className="text-center my-10" id="services">
-          <h2 className="text-3xl font-semibold mb-4">Select Your Services</h2>
-          <p className="text-gray-600 mb-6">Choose the services relevant to your car</p>
-          <div className="grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {serviceOptions.map((srv, idx) => (
-              <div
-                key={idx}
-                className={`border rounded-xl p-4 text-center cursor-pointer transition ${
-                  selectedServices.includes(srv)
-                    ? "bg-gray-100 border-black scale-[1.02]"
-                    : "hover:border-gray-400"
-                }`}
-                onClick={() => toggleService(srv)}
-              >
-                <p className="font-medium">{srv}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 flex justify-center">
-            <button
-              onClick={() => setStep(3)}
-              disabled={selectedServices.length === 0}
-              className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900 disabled:opacity-50"
-            >
-              Continue
-            </button>
-          </div>
-        </div>
-      )}
-
       {step === 3 && (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (validate()) setStep(4);
-          }}
-          className="mt-10 max-w-lg mx-auto space-y-4"
-        >
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          if (validate()) setStep(4);
+        }} className="mt-10 max-w-lg mx-auto space-y-4">
           <h2 className="text-center text-2xl font-semibold">Your Details</h2>
           <input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full border px-4 py-3 rounded" />
           {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
@@ -194,10 +168,12 @@ export default function QuoteForm() {
           </label>
           {errors.gdpr && <p className="text-red-500 text-sm">{errors.gdpr}</p>}
           <div className="text-center">
-            <button type="submit" className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900">
-              Next
-            </button>
-          </div>
+          <button
+  type="submit"
+  className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900"
+>
+  Next
+</button>          </div>
         </form>
       )}
 
@@ -217,9 +193,20 @@ export default function QuoteForm() {
             </div>
           </div>
           <div className="text-center">
-            <button type="submit" disabled={!deliveryMethod} className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900 disabled:opacity-50">
-              Get a Quote
-            </button>
+          <button
+  type="submit"
+  disabled={!deliveryMethod}
+  className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900 disabled:opacity-50"
+>
+  Get a Quote
+</button>
+{success && (
+  <div className="mt-4 text-green-600 font-medium text-center transition-all duration-300">
+    ✅ Your quote was successfully sent!
+  </div>
+)}
+            {errors.gdpr && <p className="text-red-500 text-sm">{errors.gdpr}</p>}
+
           </div>
         </form>
       )}
