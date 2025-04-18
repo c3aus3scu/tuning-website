@@ -21,7 +21,6 @@ const sendQuoteEmail = async (data) => {
     lookupData = {},
     matchedServices = [],
     deliveryMethod,
-    gdpr
   } = data;
 
   const servicesList = matchedServices.length > 0
