@@ -109,9 +109,9 @@ export default function QuoteForm({ step, setStep, regNumber }) {
 
       {step === 2 && (
         <>
-          <div className="text-center my-10" id="services">
-            <h2 className="text-3xl font-semibold mb-4">Select Your Services</h2>
-            <p className="text-gray-600 mb-6">Choose the services relevant to your car</p>
+<div id="services" className="scroll-mt-28 md:scroll-mt-0 text-center my-10">
+  <h2 className="text-3xl font-semibold mb-4">Select Your Services</h2>
+  <p className="text-gray-600 mb-6">Choose the services relevant to your car</p>
             <div className="grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {serviceOptions.map((srv, idx) => (
                 <div
