@@ -56,7 +56,7 @@ export default function QuoteForm({ step, setStep, regNumber }) {
       await axios.post("/api/quote", {
         regNumber,
         lookupData: vehicle,
-        selectedServices,
+        matchedServices: selectedServices, // 👈 trebuie să fie matchedServices!
         name,
         phone,
         email,
