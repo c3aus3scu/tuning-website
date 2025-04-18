@@ -26,10 +26,11 @@ export default function QuoteForm({ step, setStep }) {
     "Stage 1 Remap", "Stage 2 Remap", "DPF Delete", "EGR Delete", "AdBlue Delete",
     "Swirl Flap Solution", "Diagnostic Trouble Code (DTC) Solution",
     "Remap Solution Without Tune", "AdBlue Solution",
-    "Android Auto / Apple CarPlay Module", "AA/ACP Screen Upgrade - Linux OS",
-    "AA/ACP Screen Upgrade - Android OS", "Ghost Immobiliser",
-    "Return To Original", "Datalogging Session", "ECU Cloning"
+    "Android Auto / Apple CarPlay Module",
+    "Return To Original", "Datalogging Session", "ECU Cloning",
+    "Catalytic Converter Off"
   ];
+
 
   const toggleService = (srv) => {
     setSelectedServices((prev) =>
