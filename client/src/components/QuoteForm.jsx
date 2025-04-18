@@ -2,54 +2,60 @@ import React, { useState } from "react";
 import axios from "axios";
 
 export default function QuoteForm() {
+  const [step, setStep] = useState(1);
   const [regNumber, setRegNumber] = useState("");
   const [vehicle, setVehicle] = useState(null);
-  const [services, setServices] = useState([]);
-  const [selectedServices, setSelectedServices] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [selectedServices, setSelectedServices] = useState([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [gdprAccepted, setGdprAccepted] = useState(false);
-
+  const [gdpr, setGdpr] = useState(false);
+  const [deliveryMethod, setDeliveryMethod] = useState("");
   const [errors, setErrors] = useState({});
+
+  const serviceOptions = [
+    "Stage 1 Remap", "Stage 2 Remap", "DPF Delete", "EGR Delete", "AdBlue Delete",
+    "Swirl Flap Solution", "Diagnostic Trouble Code (DTC) Solution",
+    "Remap Solution Without Tune", "AdBlue Solution",
+    "Android Auto / Apple CarPlay Module", "AA/ACP Screen Upgrade - Linux OS",
+    "AA/ACP Screen Upgrade - Android OS", "Ghost Immobiliser",
+    "Return To Original", "Datalogging Session", "ECU Cloning"
+  ];
 
   const handleLookup = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setVehicle(null);
-    setServices([]);
-    setSelectedServices([]);
-
-    try {
-      const res = await axios.post("/api/lookup", { regNumber });
-      setVehicle(res.data.vehicle);
-      setServices(res.data.matchedServices);
-    } catch (err) {
-      console.error("Lookup error:", err);
-    } finally {
-      setLoading(false);
-    }
+    setTimeout(async () => {
+      try {
+        const res = await axios.post("/api/lookup", { regNumber });
+        setVehicle(res.data.vehicle);
+        setStep(2);
+      } catch (err) {
+        console.error("Lookup error:", err);
+      } finally {
+        setLoading(false);
+      }
+    }, 2500);
   };
 
-  const toggleService = (service) => {
+  const toggleService = (srv) => {
     setSelectedServices((prev) =>
-      prev.includes(service)
-        ? prev.filter((s) => s !== service)
-        : [...prev, service]
+      prev.includes(srv)
+        ? prev.filter((s) => s !== srv)
+        : [...prev, srv]
     );
   };
 
   const validate = () => {
-    const newErrors = {};
-    if (!name.trim()) newErrors.name = "Name is required.";
-    if (!/^\S+@\S+\.\S+$/.test(email)) newErrors.email = "Invalid email address.";
-    if (!/^[0-9]{10,}$/.test(phone)) newErrors.phone = "Phone must be at least 10 digits.";
-    if (!gdprAccepted) newErrors.gdpr = "You must accept GDPR terms.";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    const err = {};
+    if (!name.trim()) err.name = "Required.";
+    if (!/^[0-9]{10,}$/.test(phone)) err.phone = "Invalid phone.";
+    if (!/\S+@\S+\.\S+/.test(email)) err.email = "Invalid email.";
+    if (!gdpr) err.gdpr = "Accept GDPR.";
+    setErrors(err);
+    return Object.keys(err).length === 0;
   };
 
   const handleSubmit = async (e) => {
@@ -60,130 +66,156 @@ export default function QuoteForm() {
       await axios.post("/api/quote", {
         regNumber,
         lookupData: vehicle,
-        matchedServices: selectedServices,
+        selectedServices,
         name,
         phone,
         email,
         message,
+        deliveryMethod,
       });
-      alert("Quote sent successfully!");
+      alert("Quote sent!");
+      setStep(1);
     } catch (err) {
-      console.error("Error sending quote:", err);
-      alert("Something went wrong.");
+      console.error(err);
+      alert("Error sending quote.");
     }
   };
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col items-center py-10 px-4">
-      <div className="w-full max-w-2xl text-center">
-        <h1 className="text-4xl font-bold mb-2">Auto Tuning Quote</h1>
-        <p className="text-gray-600 mb-6">Enter your registration number to see what services we offer</p>
-      </div>
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      {step === 1 && (
+        <>
+          <div className="text-center mb-8" id="regcheck">
+            <h1 className="text-4xl font-bold mb-2">Auto Tuning Quote</h1>
+            <p className="text-gray-600 mb-6">Enter your registration number to see what services we offer</p>
+            <form onSubmit={handleLookup} className="flex flex-col items-center gap-4">
+              <div className="w-full md:w-1/2">
+                <input
+                  type="text"
+                  value={regNumber}
+                  onChange={(e) => setRegNumber(e.target.value.toUpperCase())}
+                  placeholder="Registration Number"
+                  className="w-full px-5 py-4 text-center border border-gray-300 rounded-xl shadow"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900"
+              >
+                {loading ? "Checking..." : "Check"}
+              </button>
+            </form>
+          </div>
 
-      <form onSubmit={handleLookup} className="w-full max-w-md flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Registration Number"
-          value={regNumber}
-          onChange={(e) => setRegNumber(e.target.value.toUpperCase())}
-          className="border border-gray-300 rounded-lg px-4 py-3 text-center text-lg"
-          required
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-black text-white rounded-lg py-3 text-lg hover:bg-gray-900 transition"
-        >
-          {loading ? "Checking..." : "Continue"}
-        </button>
-      </form>
-
-      {vehicle && (
-        <div className="mt-8 text-center">
-          <p className="text-lg font-semibold">{vehicle.make} {vehicle.model} ({vehicle.year})</p>
-          <p>{vehicle.engineSize}L • {vehicle.fuelType} • Euro {vehicle.euroStatus}</p>
-        </div>
+          {/* Info Section */}
+          <div className="mt-12 space-y-4 text-gray-700 max-w-3xl mx-auto text-center">
+            <h2 className="text-xl font-semibold">How To Use Our Reg Checker</h2>
+            <p>When using our reg checker, the goal is to show what services we offer for your car.</p>
+            <ul className="list-disc list-inside text-left text-sm md:text-base text-center">
+              <li>See which services each of our branches offer</li>
+              <li>Book online & view availability</li>
+              <li>See gains for ECU remaps</li>
+              <li>View pricing for extras</li>
+              <li>Get info about dyno, finance, and mobile/workshop options</li>
+            </ul>
+          </div>
+        </>
       )}
 
-      {services.length > 0 && (
-        <div className="mt-10 w-full max-w-4xl">
-          <h2 className="text-2xl font-semibold text-center mb-4">Select your services</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {services.map((srv, idx) => {
-              const selected = selectedServices.includes(srv);
-              return (
+      {step === 2 && (
+        <>
+          <div className="text-center my-10" id="services">
+            <h2 className="text-3xl font-semibold mb-4">Select Your Services</h2>
+            <p className="text-gray-600 mb-6">Choose the services relevant to your car</p>
+            <div className="grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {serviceOptions.map((srv, idx) => (
                 <div
                   key={idx}
-                  onClick={() => toggleService(srv)}
-                  className={`cursor-pointer transition-all duration-200 border-2 rounded-xl p-6 text-center font-medium text-lg shadow-sm ${
-                    selected
-                      ? "border-black bg-gray-100 scale-105"
-                      : "border-gray-200 hover:border-gray-400 hover:scale-[1.01]"
+                  className={`border rounded-xl p-4 text-center cursor-pointer transition ${
+                    selectedServices.includes(srv)
+                      ? "bg-gray-100 border-black scale-[1.02]"
+                      : "hover:border-gray-400"
                   }`}
+                  onClick={() => toggleService(srv)}
                 >
-                  {srv}
+                  <p className="font-medium">{srv}</p>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={() => setStep(3)}
+                disabled={selectedServices.length === 0}
+                className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900 disabled:opacity-50"
+              >
+                Continue
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
-      {selectedServices.length > 0 && (
-        <form onSubmit={handleSubmit} className="mt-10 w-full max-w-md flex flex-col gap-4">
-          <input
-            type="text"
-            placeholder="Full Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="border px-4 py-3 rounded"
-          />
+      {step === 3 && (
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          if (validate()) setStep(4);
+        }} className="mt-10 max-w-lg mx-auto space-y-4">
+          <h2 className="text-center text-2xl font-semibold">Your Details</h2>
+          <input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full border px-4 py-3 rounded" />
           {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-
-          <input
-            type="tel"
-            placeholder="Phone Number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="border px-4 py-3 rounded"
-          />
+          <input type="tel" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full border px-4 py-3 rounded" />
           {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
-
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border px-4 py-3 rounded"
-          />
+          <input type="email" placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full border px-4 py-3 rounded" />
           {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-
-          <textarea
-            placeholder="Message (optional)"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            rows="3"
-            className="border px-4 py-3 rounded resize-none"
-          />
-
+          <textarea placeholder="Message (optional)" value={message} onChange={(e) => setMessage(e.target.value)} className="w-full border px-4 py-3 rounded" rows="3" />
           <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={gdprAccepted}
-              onChange={(e) => setGdprAccepted(e.target.checked)}
-            />
+            <input type="checkbox" checked={gdpr} onChange={(e) => setGdpr(e.target.checked)} />
             I agree to the GDPR terms and privacy policy.
           </label>
           {errors.gdpr && <p className="text-red-500 text-sm">{errors.gdpr}</p>}
-
-          <button
-            type="submit"
-            className="bg-black text-white px-8 py-3 rounded-lg text-lg hover:bg-gray-900 transition"
-          >
-            Get a Quote
-          </button>
+          <div className="text-center">
+            <button type="submit" className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900">Next</button>
+          </div>
         </form>
       )}
+
+      {step === 4 && (
+        <form onSubmit={handleSubmit} className="mt-10 max-w-4xl mx-auto space-y-6">
+          <h2 className="text-center text-2xl font-semibold">Workshop or Mobile?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div onClick={() => setDeliveryMethod("workshop")} className={`p-6 border rounded-xl cursor-pointer transition shadow ${deliveryMethod === "workshop" ? "border-black bg-gray-50" : "hover:border-gray-400"}`}>
+              <h3 className="font-semibold mb-2">Visit our workshop</h3>
+              <p>Book a specific day & time. No extra charge.</p>
+              <p className="mt-2 font-medium">I'll come to you +£0</p>
+            </div>
+            <div onClick={() => setDeliveryMethod("mobile")} className={`p-6 border rounded-xl cursor-pointer transition shadow ${deliveryMethod === "mobile" ? "border-black bg-gray-50" : "hover:border-gray-400"}`}>
+              <h3 className="font-semibold mb-2">Mobile service</h3>
+              <p>Choose AM/PM. We'll confirm final time the day before. +£30 charge.</p>
+              <p className="mt-2 font-medium">You come to me +£30</p>
+            </div>
+          </div>
+          <div className="text-center">
+            <button type="submit" disabled={!deliveryMethod} className="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-900 disabled:opacity-50">
+              Get a Quote
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* WHY CHOOSE US */}
+      <div className="mt-20 max-w-4xl mx-auto px-4" id="why">
+        <h2 className="text-2xl font-bold mb-4 text-center">Why Choose Us?</h2>
+        <p className="text-gray-700 text-center mb-6">We use genuine tools and high-calibre tunes to ensure maximum safety when tuning your vehicle.</p>
+        <ul className="list-disc list-inside text-sm md:text-base text-gray-700 space-y-2 text-center">
+          <li>Fully insured, IMI accredited, in-house dyno</li>
+          <li>Custom calibrations for every vehicle</li>
+          <li>Thousands of vehicles tuned since 2016</li>
+          <li>Workshop with waiting area, tea/coffee, comfy sofa</li>
+          <li>Viewing window so you can watch the process</li>
+        </ul>
+      </div>
     </div>
   );
 }
