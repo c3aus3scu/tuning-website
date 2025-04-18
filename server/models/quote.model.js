@@ -1,3 +1,4 @@
+// models/Quote.js
 const mongoose = require('mongoose');
 
 const QuoteSchema = new mongoose.Schema({
@@ -14,11 +15,12 @@ const QuoteSchema = new mongoose.Schema({
   },
   matchedServices: [String],
 
-  // 🔥 Astea sunt noile câmpuri:
   name: String,
   phone: String,
   email: String,
   message: String,
+  deliveryMethod: String,
+  gdpr: Boolean,
 
   createdAt: {
     type: Date,

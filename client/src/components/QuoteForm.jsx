@@ -69,23 +69,24 @@ export default function QuoteForm() {
     if (!validate()) return;
 
     try {
-      await axios.post("/api/quote", {
-        regNumber,
-        lookupData: vehicle,
-        selectedServices,
-        name,
-        phone,
-        email,
-        message,
-        deliveryMethod,
-      });
-      alert("Quote sent!");
-      setStep(1);
-    } catch (err) {
-      console.error(err);
-      alert("Error sending quote.");
-    }
-  };
+        await axios.post("/api/quote", {
+          regNumber,
+          lookupData: vehicle,
+          matchedServices: selectedServices,
+          name,
+          phone,
+          email,
+          message,
+          deliveryMethod,
+          gdpr, // 🔔 Nu uita să trimiți și gdpr (nu era în codul tău inițial aici)
+        });
+        alert("Quote sent!");
+        setStep(1);
+      } catch (err) {
+        console.error(err);
+        alert("Error sending quote.");
+      }
+
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">

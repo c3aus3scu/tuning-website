@@ -1,21 +1,30 @@
 const nodemailer = require('nodemailer');
-require('dotenv').config();  // Asigură-te că variabilele de mediu sunt încărcate
+require('dotenv').config();
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: process.env.SMTP_PORT,
-  secure: true,  // Folosește TLS/SSL pentru securitate
+  secure: true,
   auth: {
-    user: process.env.SMTP_USER,  // Folosește utilizatorul din .env
-    pass: process.env.SMTP_PASS,  // Folosește parola din .env
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
 });
 
 const sendQuoteEmail = async (data) => {
-  const { name, email, phone, message, regNumber, lookupData, matchedServices } = data;
+  const {
+    name,
+    email,
+    phone,
+    message,
+    regNumber,
+    lookupData = {},
+    matchedServices = [],
+    deliveryMethod,
+    gdpr
+  } = data;
 
-  // Dacă matchedServices este undefined, folosește un array gol pentru a evita eroarea
-  const servicesList = matchedServices && matchedServices.length > 0
+  const servicesList = matchedServices.length > 0
     ? matchedServices.join(', ')
     : 'No services selected';
 
@@ -27,18 +36,22 @@ const sendQuoteEmail = async (data) => {
     <p><strong>Message:</strong> ${message || '-'}</p>
     <hr />
     <p><strong>Reg Number:</strong> ${regNumber}</p>
-    <p><strong>Vehicle:</strong> ${lookupData.make} ${lookupData.model} (${lookupData.year})</p>
-    <p><strong>Fuel:</strong> ${lookupData.fuelType}</p>
-    <p><strong>Engine:</strong> ${lookupData.engineSize}L | Euro: ${lookupData.euroStatus}</p>
+    <p><strong>Vehicle:</strong> ${lookupData.make || '-'} ${lookupData.model || ''} (${lookupData.year || '-'})</p>
+    <p><strong>Fuel:</strong> ${lookupData.fuelType || '-'}</p>
+    <p><strong>Engine:</strong> ${lookupData.engineSize || '-'}L | Euro: ${lookupData.euroStatus || '-'}</p>
     <p><strong>Suggested Services:</strong> ${servicesList}</p>
-    <p><strong>Note:</strong> Please do not reply to this email. Contact us at <a href="mailto:contact@mddremap.com">contact@mddremap.com</a>.</p>
+    <p><strong>Delivery Method:</strong> ${deliveryMethod || '-'}</p>
+    <p><strong>GDPR:</strong> ${gdpr ? 'Accepted' : 'Not accepted'}</p>
+    <br />
+    <p><em>Do not reply to this email. For questions contact <a href="mailto:contact@mddremap.com">contact@mddremap.com</a>.</em></p>
   `;
 
-  // Trimite emailul
+  // Trimite email către ambele adrese
   await transporter.sendMail({
-    from: `"MDDREMAP" <${process.env.SMTP_USER}>`,  // Folosește utilizatorul definit în .env
-    to: email,  // Trimite către emailul clientului
-    subject: 'New Quote Request',
+    from: `"MDDREMAP" <${process.env.SMTP_USER}>`,
+    to: email, // Client
+    cc: process.env.MAIL_RECEIVER, // Admin sau altă adresă
+    subject: 'Your Quote Request – MDDREMAP',
     html,
   });
 };
