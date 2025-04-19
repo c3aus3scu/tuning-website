@@ -21,6 +21,8 @@ export default function QuoteForm({ step, setStep, regNumber }) {
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [preferredContact, setPreferredContact] = useState("");
+
 
   const serviceOptions = [
     "Stage 1 Remap", "Stage 2 Remap", "DPF Delete", "EGR Delete", "AdBlue Delete",
@@ -67,6 +69,8 @@ export default function QuoteForm({ step, setStep, regNumber }) {
         email,
         message,
         deliveryMethod,
+        preferredContact, // 👈 Asigură-te că E AICI
+
       });
       setSuccess(true);
       setSubmitError("");
@@ -160,87 +164,240 @@ export default function QuoteForm({ step, setStep, regNumber }) {
         </>
       )}
 
-      {/* Step 2: Services */}
-      {step === 2 && (
-        <div id="services" className="scroll-mt-28 md:scroll-mt-0 text-center my-10">
-          <h2 className="text-3xl font-semibold mb-4">Select Your Services</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">Choose the services relevant to your car</p>
-          <div className="grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {serviceOptions.map((srv, idx) => (
-              <div
-                key={idx}
-                className={`border rounded-xl p-4 text-center cursor-pointer transition-all duration-200 ${
-                  selectedServices.includes(srv)
-                    ? "bg-gray-100 dark:bg-white text-black border-black scale-[1.02]"
-                    : "hover:border-gray-500 dark:hover:border-gray-300"
-                }`}
-                onClick={() => toggleService(srv)}
-              >
-                <p className="font-medium">{srv}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 flex justify-center gap-4">
-            <button
-              onClick={() => setStep(1)}
-              className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-6 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition"
-            >
-              Back
-            </button>
-            <button
-              onClick={() => {
-                if (selectedServices.length > 0) {
-                  setStep(3);
-                }
-              }}
-              className="bg-black dark:bg-white text-white dark:text-black px-8 py-3 rounded-lg hover:bg-gray-900 dark:hover:bg-gray-300 transition"
-            >
-              Continue
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Step 3: Details */}
-      {step === 3 && (
-        <form
-          id="step3"
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (validate()) setStep(4);
-          }}
-          className="mt-10 max-w-lg mx-auto space-y-4 scroll-mt-28 md:scroll-mt-0"
+   {/* Step 2: Services */}
+{step === 2 && (
+  <div
+    id="services"
+    className="scroll-mt-28 md:scroll-mt-0 text-center my-10 px-4"
+  >
+    <h2 className="text-4xl font-bold mb-4 dark:text-white">
+      Select Your Services
+    </h2>
+    <p className="text-gray-600 dark:text-gray-400 mb-8">
+      Choose the services relevant to your car
+    </p>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[
+        {
+          name: "Stage 1 Remap",
+          img: "https://vuduperformance.com/cdn/shop/files/polo-gti-s1-dyno-graph_2000x2000.jpg?v=1737560551",
+        },
+        {
+          name: "Stage 2 Remap",
+          img: "https://vuduperformance.com/cdn/shop/files/polo-gti-stage-2-remap_781f1af1-5208-4ab1-9db8-f81436558708_2000x2000.jpg?v=1737560537",
+        },
+        {
+          name: "DPF Delete",
+          img: "https://dynotune.net/wp-content/uploads/2024/03/14.-dpf-delete-and-remap.webp",
+        },
+        {
+          name: "EGR Delete",
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrm6aKBn1wT0tuEVzBtLMIZHAsk67Y3krd1gjI1W5EvPQpi0AM8-f0uE5CTCTwDjKoLLc&usqp=CAU",
+        },
+        {
+          name: "AdBlue Delete",
+          img: "https://api.caracaltech.com/static/thumbnails/619a14e93d96c404e4a5da65.webp",
+        },
+        {
+          name: "Swirl Flap Solution",
+          img: "https://api.caracaltech.com/static/thumbnails/618911099d8d798e1e2b085a.webp",
+        },
+        {
+          name: "Diagnostic Trouble Code (DTC) Solution",
+          img: "https://lh3.googleusercontent.com/proxy/94JQ1y7QWf-CVDebQi4mPD4JfPKKnkY9UNnVTYG2taZG1Bkyui0sJ0sxpQD8OSpCZjrcyRqgpffmeZjvzX9Uk3mRIRq3gkEEhDrTgxSt2srUNpXAnkfCKq_1W7pZsYV6li0dz48",
+        },
+        {
+          name: "Remap Solution Without Tune",
+          img: "https://thetuner.co.uk/wp-content/uploads/2024/04/faqs-about-car-remapping.webp",
+        },
+        {
+          name: "AdBlue Solution",
+          img: "https://images.squarespace-cdn.com/content/v1/615ebb31f31c981a073f0eee/2c61b453-0645-480f-8045-9f03b95f704e/refill-adblue-800x350.jpg",
+        },
+        {
+          name: "Android Auto / Apple CarPlay Module",
+          img: "https://i.ebayimg.com/images/g/tv8AAOSwjFJjIxuz/s-l1200.jpg",
+        },
+        {
+          name: "Return To Original",
+          img: "https://dynomotorsport.tn/wp-content/uploads/2019/08/evc.jpg",
+        },
+        {
+          name: "Datalogging Session",
+          img: "https://pumaspeed.co.uk/saved/Stage_1R.jpg",
+        },
+        {
+          name: "ECU Cloning",
+          img: "https://cdn.zyrosite.com/cdn-ecommerce/store_01HSGZ1BF56SZ677GAR6GW38BE%2Fassets%2F1712327316901-ecu%20cloning.png",
+        },
+        {
+          name: "Catalytic Converter Off",
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCGmeYCQmnCcufsEGAZEmHG7YHuD-D5jBhdQ&s",
+        },
+      ].map(({ name, img }, idx) => (
+        <div
+          key={idx}
+          className={`group relative border rounded-2xl p-6 text-center cursor-pointer transition-all duration-300 shadow-md hover:shadow-xl hover:scale-[1.03]
+          ${
+            selectedServices.includes(name)
+              ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-900 dark:border-cyan-400"
+              : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+          }`}
+          onClick={() => toggleService(name)}
         >
-          <h2 className="text-center text-2xl font-semibold">Your Details</h2>
-          <input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full border px-4 py-3 rounded bg-white dark:bg-gray-800 dark:text-white" />
-          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-          <input type="tel" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full border px-4 py-3 rounded bg-white dark:bg-gray-800 dark:text-white" />
-          {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
-          <input type="email" placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full border px-4 py-3 rounded bg-white dark:bg-gray-800 dark:text-white" />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-          <textarea placeholder="Message (optional)" value={message} onChange={(e) => setMessage(e.target.value)} className="w-full border px-4 py-3 rounded bg-white dark:bg-gray-800 dark:text-white" rows="3" />
-          <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={gdpr} onChange={(e) => setGdpr(e.target.checked)} />
-            I agree to the GDPR terms and privacy policy.
-          </label>
-          {errors.gdpr && <p className="text-red-500 text-sm">{errors.gdpr}</p>}
-          <div className="text-center flex justify-center gap-4">
-            <button
-              type="button"
-              onClick={() => setStep(2)}
-              className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-6 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition"
-            >
-              Back
-            </button>
-            <button
-              type="submit"
-              className="bg-black dark:bg-white text-white dark:text-black px-8 py-3 rounded-lg hover:bg-gray-900 dark:hover:bg-gray-300 transition"
-            >
-              Next
-            </button>
+          <div className="h-32 w-full mb-4 rounded-xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 group-hover:brightness-110 transition">
+            <img
+              src={img}
+              alt={name}
+              className="h-full w-full object-cover"
+              onError={(e) => {
+                e.target.style.display = "none";
+              }}
+            />
           </div>
-        </form>
-      )}
+          <p className="font-medium text-gray-900 dark:text-white text-lg">
+            {name}
+          </p>
+        </div>
+      ))}
+    </div>
+
+    <div className="mt-10 flex justify-center gap-4">
+      <button
+        onClick={() => setStep(1)}
+        className="bg-gray-300 dark:bg-gray-700 text-black dark:text-white px-6 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-600 transition"
+      >
+        Back
+      </button>
+      <button
+        onClick={() => {
+          if (selectedServices.length > 0) setStep(3);
+        }}
+        className={`px-8 py-3 rounded-lg transition font-semibold ${
+          selectedServices.length > 0
+            ? "bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-200"
+            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+        }`}
+        disabled={selectedServices.length === 0}
+      >
+        Continue
+      </button>
+    </div>
+  </div>
+)}
+
+
+
+    {/* Step 3: Details */}
+{step === 3 && (
+  <motion.form
+    id="step3"
+    onSubmit={(e) => {
+      e.preventDefault();
+      if (validate()) setStep(4);
+    }}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="mt-10 max-w-lg mx-auto space-y-4 scroll-mt-28 md:scroll-mt-0"
+  >
+    <h2 className="text-center text-2xl font-semibold">Your Details</h2>
+
+    {/* Registration Display */}
+    <input
+      type="text"
+      value={regNumber}
+      readOnly
+      className="w-full border px-4 py-3 rounded bg-gray-100 dark:bg-gray-700 dark:text-white cursor-not-allowed opacity-70"
+      title="Your registration"
+    />
+
+    <input
+      type="text"
+      placeholder="Full Name"
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+      className="w-full border px-4 py-3 rounded bg-white dark:bg-gray-800 dark:text-white"
+    />
+    {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+
+    <input
+      type="tel"
+      placeholder="Phone Number"
+      value={phone}
+      onChange={(e) => setPhone(e.target.value)}
+      className="w-full border px-4 py-3 rounded bg-white dark:bg-gray-800 dark:text-white"
+    />
+    {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
+
+    <input
+      type="email"
+      placeholder="Email Address"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      className="w-full border px-4 py-3 rounded bg-white dark:bg-gray-800 dark:text-white"
+    />
+    {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+
+    {/* Contact Preference */}
+    <label className="block text-left text-sm font-medium">Preferred Contact Method</label>
+    <select
+      value={preferredContact}
+      onChange={(e) => setPreferredContact(e.target.value)}
+      className="w-full border px-4 py-3 rounded bg-white dark:bg-gray-800 dark:text-white"
+    >
+      <option value="">Select...</option>
+      <option value="phone">Phone</option>
+      <option value="email">Email</option>
+      <option value="whatsapp">WhatsApp</option>
+    </select>
+
+    {/* Message + counter */}
+    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+      <span>Optional message</span>
+      <span>{message.length}/250</span>
+    </div>
+    <textarea
+      placeholder="Message (optional)"
+      value={message}
+      onChange={(e) => setMessage(e.target.value.slice(0, 250))}
+      className="w-full border px-4 py-3 rounded bg-white dark:bg-gray-800 dark:text-white"
+      rows="3"
+    />
+
+    {/* Info + GDPR */}
+    <p className="text-xs text-gray-500 dark:text-gray-400 italic">
+      Your personal information is secure and will never be shared. We only use it to contact you regarding your quote.
+    </p>
+
+    <label className="flex items-center gap-2 text-sm">
+      <input
+        type="checkbox"
+        checked={gdpr}
+        onChange={(e) => setGdpr(e.target.checked)}
+      />
+      I agree to the GDPR terms and privacy policy.
+    </label>
+    {errors.gdpr && <p className="text-red-500 text-sm">{errors.gdpr}</p>}
+
+    <div className="text-center flex justify-center gap-4">
+      <button
+        type="button"
+        onClick={() => setStep(2)}
+        className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-6 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition"
+      >
+        Back
+      </button>
+      <button
+        type="submit"
+        className="bg-black dark:bg-white text-white dark:text-black px-8 py-3 rounded-lg hover:bg-gray-900 dark:hover:bg-gray-300 transition"
+      >
+        Next
+      </button>
+    </div>
+  </motion.form>
+)}
+
 
       {/* Step 4: Delivery */}
       {step === 4 && (

@@ -21,6 +21,7 @@ const sendQuoteEmail = async (data) => {
     lookupData = {},
     matchedServices = [],
     deliveryMethod,
+    preferredContact,
   } = data;
 
   const servicesList = matchedServices.length > 0
@@ -40,6 +41,8 @@ const sendQuoteEmail = async (data) => {
     <p><strong>Engine:</strong> ${lookupData.engineSize || '-'}L | Euro: ${lookupData.euroStatus || '-'}</p>
     <p><strong>Suggested Services:</strong> ${servicesList}</p>
     <p><strong>Delivery Method:</strong> ${deliveryMethod || '-'}</p>
+    <p><strong>Preferred Contact:</strong> ${preferredContact || '-'}</p>
+
     <br />
     <p><em>Do not reply to this email. For questions contact <a href="mailto:contact@mddremap.com">contact@mddremap.com</a>.</em></p>
   `;

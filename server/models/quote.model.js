@@ -19,6 +19,7 @@ const QuoteSchema = new mongoose.Schema({
   phone: String,
   email: String,
   message: String,
+  preferredContact: String,
   deliveryMethod: String,
   gdpr: Boolean,
 

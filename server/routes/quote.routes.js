@@ -14,7 +14,8 @@ router.post('/quote', async (req, res) => {
       lookupData,
       matchedServices,
       message,
-      deliveryMethod
+      deliveryMethod,
+      preferredContact,
       // ⚠️ Excludem gdpr aici
     } = req.body;
 
@@ -31,7 +32,8 @@ router.post('/quote', async (req, res) => {
       lookupData,
       matchedServices,
       message,
-      deliveryMethod
+      deliveryMethod,
+      preferredContact
     };
 
     // ✅ Salvare în MongoDB fără GDPR
