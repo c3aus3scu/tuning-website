@@ -41,12 +41,12 @@ export default function Contact() {
 
           <div className="space-y-4">
             <h3 className="text-xl font-semibold">Navigate to us</h3>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               <a
                 href="https://www.google.com/maps/dir/?api=1&destination=21+Norfolk+Road,+LU2+0RE"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition w-40 justify-center text-sm"
               >
                 <FaGoogle /> Google Maps
               </a>
@@ -54,7 +54,7 @@ export default function Contact() {
                 href="https://waze.com/ul?ll=51.8889295,-0.4056214&navigate=yes"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition w-40 justify-center text-sm"
               >
                 <FaWaze /> Waze
               </a>
@@ -62,14 +62,14 @@ export default function Contact() {
                 href="http://maps.apple.com/?daddr=21+Norfolk+Road,+LU2+0RE"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-2 rounded-lg bg-gray-800 text-white hover:bg-gray-900 transition"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800 text-white hover:bg-gray-900 transition w-40 justify-center text-sm"
               >
                 <FaApple /> Apple Maps
               </a>
             </div>
           </div>
 
-          <div className="w-[90%] mx-auto">
+          <div className="w-full sm:w-[100%] mx-auto">
             <iframe
               title="Google Maps"
               className="rounded-xl w-full h-[400px] shadow-lg"
@@ -81,14 +81,14 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="mt-10 text-center">
           <h3 className="text-xl font-bold mb-2">Need help choosing the right service?</h3>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
             Our team is happy to assist with technical questions, service recommendations, or appointment planning. Contact us anytime.
           </p>
         </div>
 
-        <div className="mt-12 flex justify-center gap-4">
+        <div className="mt-10 flex justify-center gap-4">
           <Link to="/" className="px-6 py-3 rounded-lg bg-black text-white dark:bg-white dark:text-black hover:opacity-90 transition">
             Back to Home
           </Link>
