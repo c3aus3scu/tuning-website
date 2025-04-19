@@ -16,7 +16,7 @@ export default function Header() {
           <Link to="/" className="hover:text-black dark:hover:text-white transition">Home</Link>
           <Link to="/services" className="hover:text-black dark:hover:text-white transition">Services</Link>
           <Link to="#" className="hover:text-black dark:hover:text-white transition">Blog</Link>
-          <Link to="#" className="hover:text-black dark:hover:text-white transition">About</Link>
+          <Link to="/about" className="hover:text-black dark:hover:text-white transition">About</Link>
           <a href="/contact" className="hover:text-black dark:hover:text-white transition">Contact</a>
         </nav>
 
