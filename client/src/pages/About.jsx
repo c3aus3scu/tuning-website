@@ -10,7 +10,7 @@ export default function About() {
 
       {/* Hero Section */}
       <section className="text-center py-28 px-6 max-w-5xl mx-auto">
-        <h1 className="text-5xl font-bold mb-4">About MDDREMAP</h1>
+        <h1 className="text-5xl font-bold mt-10 mb-4">About MDDREMAP</h1>
         <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
           Tuning isn't just our job – it's our passion. We're here to give you the safest, most powerful driving experience possible.
         </p>
