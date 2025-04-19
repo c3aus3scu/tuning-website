@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-white text-black;
+/* 👇 AICI adaugi animația */
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 8s ease infinite;
+}
+
+/* Neon effect for dark mode */
+.footer-link-dark:hover {
+    color: #00ffe1; /* Cyan glow */
+    text-shadow: 0 0 4px #00ffe1, 0 0 8px #00ffe1;
+  }
