@@ -15,9 +15,9 @@ export default function Header() {
         <nav className="hidden md:flex gap-6 text-base font-bold text-gray-700 dark:text-gray-300">
           <Link to="/" className="hover:text-black dark:hover:text-white transition">Home</Link>
           <Link to="/services" className="hover:text-black dark:hover:text-white transition">Services</Link>
-          <a href="#regcheck" className="hover:text-black dark:hover:text-white transition">Reg Check</a>
-          <a href="#contact" className="hover:text-black dark:hover:text-white transition">Contact</a>
-          <a href="#why" className="hover:text-black dark:hover:text-white transition">Why Choose Us</a>
+          <Link to="#" className="hover:text-black dark:hover:text-white transition">Blog</Link>
+          <Link to="#" className="hover:text-black dark:hover:text-white transition">About</Link>
+          <a href="/contact" className="hover:text-black dark:hover:text-white transition">Contact</a>
         </nav>
 
         {/* Theme + Burger */}
