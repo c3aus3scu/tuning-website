@@ -3,14 +3,64 @@ import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { FaGoogle, FaWaze, FaApple } from "react-icons/fa";
-
+import { Helmet } from 'react-helmet-async';
 export default function Contact() {
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
+      <Helmet>
+        <title>Contact MDDREMAP | ECU Remapping in Luton</title>
+        <meta
+          name="description"
+          content="Get in touch with MDDREMAP – experts in ECU remapping, DPF/AdBlue delete & diagnostics in Luton. Call, WhatsApp, or visit us."
+        />
+        <meta
+          name="keywords"
+          content="contact ecu remap luton, car tuning luton, dpf delete, adblue delete, diagnostic tuning luton, mddremap contact, mdd move ltd"
+        />
+        <link rel="canonical" href="https://mddremap.com/contact" />
+        <meta name="robots" content="index, follow" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            "name": "MDD MOVE LTD",
+            "image": "https://mddremap.com/images/logo.png",
+            "url": "https://mddremap.com",
+            "telephone": "+44-7399-437312",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "21 Norfolk Road",
+              "addressLocality": "Luton",
+              "postalCode": "LU2 0RE",
+              "addressCountry": "GB"
+            },
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                  "Tuesday",
+                  "Wednesday",
+                  "Thursday",
+                  "Friday",
+                  "Saturday"
+                ],
+                "opens": "09:00",
+                "closes": "18:00"
+              }
+            ],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "customer service",
+              "telephone": "+44-7399-437312"
+            }
+          })}
+        </script>
+      </Helmet>
+
       <Header />
 
-      <section className="text-center py-28 px-4 max-w-4xl mx-auto">
-        <h1 className="text-5xl font-bold mt-20 mb-6">Contact Us</h1>
+      <section className="text-center pt-40 pb-28 px-4 max-w-4xl mx-auto">
+        <h1 className="text-5xl font-bold mb-6">Contact Us</h1>
         <p className="text-gray-600 dark:text-gray-400 text-lg mb-10">
           Get in touch for questions, bookings or quote follow-ups.
         </p>
@@ -20,9 +70,11 @@ export default function Contact() {
             <div>
               <h2 className="text-2xl font-semibold mb-2">Phone</h2>
               <p className="text-gray-700 dark:text-gray-300">
-                <a href="tel:07399437312" className="hover:underline">07399 437 312</a>
-                <br />
-                or via <a href="https://wa.me/447399437312" target="_blank" rel="noopener noreferrer" className="text-green-500 hover:underline">WhatsApp</a>
+                <a href="tel:07399437312" className="hover:underline">07399 437 312</a><br />
+                or via{" "}
+                <a href="https://wa.me/447399437312" target="_blank" rel="noopener noreferrer" className="text-green-500 hover:underline">
+                  WhatsApp
+                </a>
               </p>
             </div>
             <div>
@@ -69,7 +121,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="w-full sm:w-[100%] mx-auto">
+          <div className="w-full sm:w-full mx-auto">
             <iframe
               title="Google Maps"
               className="rounded-xl w-full h-[400px] shadow-lg"
@@ -84,7 +136,7 @@ export default function Contact() {
         <div className="mt-10 text-center">
           <h3 className="text-xl font-bold mb-2">Need help choosing the right service?</h3>
           <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
-            Our team is happy to assist with technical questions, service recommendations, or appointment planning. Contact us anytime.
+            Our team is happy to assist with technical questions, service recommendations, or appointment planning.
           </p>
         </div>
 
@@ -92,7 +144,7 @@ export default function Contact() {
           <Link to="/" className="px-6 py-3 rounded-lg bg-black text-white dark:bg-white dark:text-black hover:opacity-90 transition">
             Back to Home
           </Link>
-          <Link to="/" className="px-6 py-3 rounded-lg border border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition">
+          <Link to="/quote" className="px-6 py-3 rounded-lg border border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition">
             Request a Quote
           </Link>
         </div>

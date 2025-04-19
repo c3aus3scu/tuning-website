@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function HeroSection({ setStep, setRegNumber }) {
   const [localReg, setLocalReg] = useState("");
@@ -9,11 +10,10 @@ export default function HeroSection({ setStep, setRegNumber }) {
     setLoading(true);
 
     setTimeout(() => {
-      setRegNumber(localReg);    // Trimite numărul către QuoteForm
-      setStep(2);                // Activează stepul 2
+      setRegNumber(localReg);
+      setStep(2);
       setLoading(false);
 
-      // ⚠️ Așteaptă ca DOM-ul să se actualizeze, apoi derulează
       setTimeout(() => {
         const target = document.getElementById("services");
         if (target) {
@@ -32,31 +32,66 @@ export default function HeroSection({ setStep, setRegNumber }) {
       }}
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-      <div className="relative z-10 text-center px-4 w-full max-w-2xl">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          Maximum Performance. Minimum Limits.
-        </h1>
-        <p className="text-lg md:text-xl mb-6">
-          ECU Remapping · DPF/EGR Deletes · Dyno Tuning & More
-        </p>
 
-        <div className="p-6 text-white">
-          <h2 className="text-2xl font-bold mb-2">Auto Tuning Quote</h2>
+      <div className="relative z-10 text-center px-4 w-full max-w-2xl">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl md:text-6xl font-bold mb-4"
+        >
+          ECU Remapping & Car Tuning in Luton
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-lg md:text-xl mb-6"
+        >
+          Maximum Performance. Minimum Limits.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          className="p-6 text-white"
+        >
+          <h2 className="text-2xl font-bold mb-2">Instant Tuning Quote</h2>
           <p className="mb-4">
-            Enter your registration number to see what services we offer
+            Enter your UK registration to see available tuning services.
           </p>
+
           <form
             onSubmit={handleLookup}
             className="flex flex-col items-center justify-center gap-4"
           >
-            <input
-              type="text"
-              value={localReg}
-              onChange={(e) => setLocalReg(e.target.value.toUpperCase())}
-              placeholder="Registration Number"
-              className="w-full md:w-1/2 px-5 py-4 text-center text-black text-2xl border border-gray-300 rounded-xl shadow"
-              required
-            />
+            <label htmlFor="reg" className="sr-only">
+              Vehicle Registration
+            </label>
+
+            {/* UK Icon + Input */}
+            <div className="relative w-full md:w-1/2">
+  <img
+    src="https://flagcdn.com/w40/gb.png"
+    alt="UK Flag"
+    className="absolute left-4 top-1/2 transform -translate-y-1/2 h-8 w-10 rounded shadow-sm"
+  />
+  <input
+    id="reg"
+    type="text"
+    value={localReg}
+    onChange={(e) => setLocalReg(e.target.value.toUpperCase())}
+    placeholder="Registration"
+    maxLength={7}
+    autoCapitalize="characters"
+    className="w-full pl-14 pr-4 py-4 text-center text-black text-2xl border border-gray-300 rounded-xl shadow focus:outline-none focus:ring-2 focus:ring-green-500"
+    required
+  />
+</div>
+
+
             <button
               type="submit"
               disabled={loading}
@@ -65,7 +100,7 @@ export default function HeroSection({ setStep, setRegNumber }) {
               {loading ? "Checking..." : "Check"}
             </button>
           </form>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -9,13 +9,19 @@ export default function Header() {
     <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-[95%] max-w-6xl px-4">
       <header className="bg-white dark:bg-black shadow-xl rounded-2xl px-6 py-4 md:py-6 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-3xl font-bold text-gray-900 dark:text-white">mddremap</Link>
+        <Link to="/" className="flex items-center">
+  <img
+    src="/images/Logo.png"
+    alt="MDDREMAP Logo"
+    className="ml-2 h-12 md:h-14 transform scale-[1.7] hover:scale-[1.8] transition-transform duration-300"
+    />
+</Link>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex gap-6 text-base font-bold text-gray-700 dark:text-gray-300">
           <Link to="/" className="hover:text-black dark:hover:text-white transition">Home</Link>
           <Link to="/services" className="hover:text-black dark:hover:text-white transition">Services</Link>
-          <Link to="#" className="hover:text-black dark:hover:text-white transition">Blog</Link>
+          <Link to="/blog" className="hover:text-black dark:hover:text-white transition">Blog</Link>
           <Link to="/about" className="hover:text-black dark:hover:text-white transition">About</Link>
           <Link to="/contact" className="hover:text-black dark:hover:text-white transition">Contact</Link>
         </nav>

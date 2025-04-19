@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
+import { Helmet } from 'react-helmet-async';
 const services = [
   {
     title: "Stage 1 Remap",
@@ -92,104 +92,158 @@ const services = [
 ];
 
 export default function Services() {
-  const [selected, setSelected] = useState(null);
+    const [selected, setSelected] = useState(null);
 
-  return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
-      <Header />
+    return (
+      <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
+        <Helmet>
+  <title>ECU Remapping & Car Tuning Services | MDDREMAP Luton</title>
+  <meta
+    name="description"
+    content="Discover all our car tuning services: ECU remapping, DPF & EGR delete, AdBlue solutions, Stage 1/2 performance tuning, diagnostics and more. Safe & tested in Luton."
+  />
+  <meta
+    name="keywords"
+    content="ecu remap luton, car tuning services luton, stage 1 remap, dpf delete luton, adblue delete uk, swirl flap removal, dtc fault solution, tuning garage luton"
+  />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://mddremap.com/services" />
 
-      <section className="text-center py-28 px-4 max-w-6xl mx-auto">
-        <h1 className="text-5xl font-bold mt-20 mb-5">Our Services</h1>
-        <p className="text-gray-600 dark:text-gray-400 text-lg mb-10">
-          Performance. Efficiency. Precision.
-        </p>
+  {/* ✅ JSON-LD Schema */}
+  <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "ECU Remapping & Car Tuning",
+      "provider": {
+        "@type": "AutoRepair",
+        "name": "MDD MOVE LTD",
+        "url": "https://mddremap.com",
+        "telephone": "07399437312",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "21 Norfolk Road",
+          "addressLocality": "Luton",
+          "postalCode": "LU2 0RE",
+          "addressCountry": "GB"
+        },
+        "areaServed": {
+          "@type": "Place",
+          "name": "Luton"
+        }
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Car Tuning Services",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Stage 1 Remap" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Stage 2 Remap" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "DPF Delete" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "EGR Delete" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AdBlue Delete" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Swirl Flap Removal" } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "DTC Fault Code Solution" } }
+        ]
+      }
+    })}
+  </script>
+</Helmet>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((srv, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.05 }}
-              onClick={() => setSelected(srv)}
-              className="cursor-pointer rounded-2xl overflow-hidden shadow hover:shadow-xl transition hover:scale-[1.02] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800"
-            >
-              <img
-                src={srv.img}
-                alt={srv.title}
-                className="h-48 w-full object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{srv.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">{srv.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
 
-      <AnimatePresence>
-        {selected && (
-          <motion.div
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center px-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelected(null)}
-          >
-            <motion.div
-              className="bg-white dark:bg-gray-900 text-left p-6 rounded-2xl max-w-2xl w-full shadow-xl relative"
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className="absolute top-4 right-6 text-2xl text-gray-400 hover:text-red-500 dark:hover:text-red-400"
-                onClick={() => setSelected(null)}
+        <Header />
+
+        <section className="text-center py-28 px-4 max-w-6xl mx-auto">
+          <h1 className="text-5xl font-bold mt-20 mb-5">ECU Remapping & Car Tuning Services</h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg mb-10">
+            Performance. Efficiency. Precision. Safe custom tuning in Luton.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((srv, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.05 }}
+                onClick={() => setSelected(srv)}
+                className="cursor-pointer rounded-2xl overflow-hidden shadow hover:shadow-xl transition hover:scale-[1.02] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800"
               >
-                ×
-              </button>
-              <img src={selected.img} alt={selected.title} className="rounded-lg mb-5 w-full object-cover max-h-72" />
-              <h3 className="text-2xl font-bold mb-3">{selected.title}</h3>
-              <p className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-line leading-relaxed">
-                {selected.details}
-              </p>
+                <img
+                  src={srv.img}
+                  alt={srv.title}
+                  className="h-48 w-full object-cover"
+                />
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold mb-2">{srv.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">{srv.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        <AnimatePresence>
+          {selected && (
+            <motion.div
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center px-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelected(null)}
+            >
+              <motion.div
+                className="bg-white dark:bg-gray-900 text-left p-6 rounded-2xl max-w-2xl w-full shadow-xl relative"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  className="absolute top-4 right-6 text-2xl text-gray-400 hover:text-red-500 dark:hover:text-red-400"
+                  onClick={() => setSelected(null)}
+                >
+                  ×
+                </button>
+                <img src={selected.img} alt={selected.title} className="rounded-lg mb-5 w-full object-cover max-h-72" />
+                <h3 className="text-2xl font-bold mb-3">{selected.title}</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-line leading-relaxed">
+                  {selected.details}
+                </p>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
 
-      <section className="bg-gray-100 dark:bg-gray-900 py-16 text-center px-6">
-        <h2 className="text-3xl font-bold mb-4">Why Choose Our Tuning?</h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-          We use certified tools and custom tuning files. With thousands of cars tuned and dyno-tested, you’re in safe hands.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <div className="px-6 py-4 rounded-xl bg-white dark:bg-black border dark:border-gray-700 shadow">
-            IMI Accredited</div>
-          <div className="px-6 py-4 rounded-xl bg-white dark:bg-black border dark:border-gray-700 shadow">
-            In-House Dyno</div>
-          <div className="px-6 py-4 rounded-xl bg-white dark:bg-black border dark:border-gray-700 shadow">
-            Mobile & Workshop</div>
-          <div className="px-6 py-4 rounded-xl bg-white dark:bg-black border dark:border-gray-700 shadow">
-            Custom Files</div>
-        </div>
-      </section>
+        <section className="bg-gray-100 dark:bg-gray-900 py-16 text-center px-6">
+          <h2 className="text-3xl font-bold mb-4">Why Choose Our Tuning?</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+            We use certified tools and custom tuning files. With thousands of cars tuned and dyno-tested, you’re in safe hands.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            {["IMI Accredited", "In-House Dyno", "Mobile & Workshop", "Custom Files"].map((item, idx) => (
+              <div
+                key={idx}
+                className="px-6 py-4 rounded-xl bg-white dark:bg-black border dark:border-gray-700 shadow"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        </section>
 
-      <section className="py-20 text-center">
-        <h2 className="text-2xl font-bold mb-4">Ready to unlock your car’s potential?</h2>
-        <div className="flex justify-center gap-4 mt-6">
-          <Link to="/" className="px-6 py-3 rounded-lg bg-black text-white dark:bg-white dark:text-black hover:opacity-90 transition">
-            Check Reg
-          </Link>
-          <Link to="/" className="px-6 py-3 rounded-lg border border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition">
-            Get a Quote
-          </Link>
-        </div>
-      </section>
+        <section className="py-20 text-center">
+          <h2 className="text-2xl font-bold mb-4">Ready to unlock your car’s potential?</h2>
+          <div className="flex justify-center gap-4 mt-6">
+            <Link to="/" className="px-6 py-3 rounded-lg bg-black text-white dark:bg-white dark:text-black hover:opacity-90 transition">
+              Check Reg
+            </Link>
+            <Link to="/quote" className="px-6 py-3 rounded-lg border border-black dark:border-white text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition">
+              Get a Quote
+            </Link>
+          </div>
+        </section>
 
-      <Footer />
-    </div>
-  );
-}
+        <Footer />
+      </div>
+    );
+  }

@@ -22,3 +22,6 @@
     color: #00ffe1; /* Cyan glow */
     text-shadow: 0 0 4px #00ffe1, 0 0 8px #00ffe1;
   }
+  body {
+    @apply bg-white dark:bg-black;
+  }

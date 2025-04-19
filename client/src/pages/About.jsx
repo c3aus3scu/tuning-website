@@ -1,16 +1,55 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { blogPosts } from "../data/blogPosts";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
+import { Helmet } from 'react-helmet-async';
 export default function About() {
   return (
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white transition-colors duration-300">
+      <Helmet>
+        <title>About MDDREMAP – Trusted Car Tuning in Luton</title>
+        <meta
+          name="description"
+          content="Learn more about MDDREMAP – specialists in ECU remapping, diagnostics and DPF/AdBlue/EGR solutions. Over 8 years of tuning experience in Luton."
+        />
+        <meta
+          name="keywords"
+          content="about mddremap, ecu tuning luton, remap company uk, dpf egr adblue delete experts, mobile car tuning luton, dyno tuning luton"
+        />
+        <link rel="canonical" href="https://mddremap.com/about" />
+        <meta name="robots" content="index, follow" />
+
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "MDD MOVE LTD",
+            "url": "https://mddremap.com",
+            "logo": "https://mddremap.com/images/logo.png",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+44-7399-437312",
+              "contactType": "customer service",
+              "areaServed": "GB",
+              "availableLanguage": ["English", "Romanian"]
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "21 Norfolk Road",
+              "addressLocality": "Luton",
+              "postalCode": "LU2 0RE",
+              "addressCountry": "GB"
+            }
+          })}
+        </script>
+      </Helmet>
+
       <Header />
 
       {/* Hero Section */}
-      <section className="text-center py-28 px-6 max-w-5xl mx-auto">
-        <h1 className="text-5xl font-bold mt-10 mb-4">About MDDREMAP</h1>
+      <section className="text-center px-6 max-w-5xl mx-auto pt-40 pb-16">
+        <h1 className="text-5xl font-bold mb-4">About MDDREMAP</h1>
         <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
           Tuning isn't just our job – it's our passion. We're here to give you the safest, most powerful driving experience possible.
         </p>
@@ -43,32 +82,44 @@ export default function About() {
             "Tailored Remap Files",
             "Over 8 Years Experience"
           ].map((item, idx) => (
-            <div key={idx} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow text-md font-medium">
+            <div
+              key={idx}
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow text-md font-medium"
+            >
               {item}
             </div>
           ))}
         </div>
       </section>
 
-      {/* Client Showcase Placeholder */}
+      {/* Blog Highlights */}
       <section className="bg-gray-100 dark:bg-gray-900 py-20 px-6 text-center">
-        <h2 className="text-3xl font-bold mb-4">Client Jobs & Showcase</h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-          Here's where we’ll feature some of the transformations we’ve completed – remaps, deletes, diagnostics and full builds.
-        </p>
-        <div className="border-2 border-dashed border-gray-400 dark:border-gray-600 py-16 rounded-xl text-gray-500">
-          Image gallery coming soon...
-        </div>
-      </section>
-
-      {/* Blog Highlights Placeholder */}
-      <section className="py-20 px-6 max-w-5xl mx-auto text-center">
         <h2 className="text-3xl font-bold mb-4">From the Blog</h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-8">
-          We’ll post updates, tuning tips, and behind-the-scenes insights here.
+        <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+          We post updates, tuning tips, and behind-the-scenes insights here.
         </p>
-        <div className="border-2 border-dashed border-gray-400 dark:border-gray-600 py-16 rounded-xl text-gray-500">
-          Blog content coming soon...
+
+        <div className="grid md:grid-cols-2 gap-8 text-left max-w-5xl mx-auto">
+          {blogPosts
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 2)
+            .map((post) => (
+              <Link
+                to={`/blog/${post.slug}`}
+                key={post.slug}
+                className="bg-white dark:bg-gray-900 shadow-md rounded-xl overflow-hidden hover:scale-[1.02] transition-transform"
+              >
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{post.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{post.summary}</p>
+                </div>
+              </Link>
+            ))}
         </div>
       </section>
 
