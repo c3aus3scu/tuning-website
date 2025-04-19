@@ -6,6 +6,8 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog"; // ✅
 import BlogPost from "./components/BlogPost"; // ✅ sau ./pages/BlogPost dacă nu e mutat încă
+import WhatsAppButton from './components/WhatsAppButton';
+
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
+        <WhatsAppButton />
+        {/* Footer component can be added here if needed */}
     </Router>
   );
 }

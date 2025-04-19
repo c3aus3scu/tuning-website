@@ -50,11 +50,12 @@ const sendQuoteEmail = async (data) => {
   // Trimite email către ambele adrese
   await transporter.sendMail({
     from: `"MDDREMAP" <${process.env.SMTP_USER}>`,
-    to: email, // Client
-    cc: process.env.MAIL_RECEIVER, // Admin sau altă adresă
-    subject: 'Your Quote Request – MDDREMAP',
+    to: process.env.MAIL_RECEIVER, // Tu (adminul)
+    replyTo: email, // ca să poți răspunde clientului cu un click
+    subject: 'New Quote Request – MDDREMAP',
     html,
   });
+
 };
 
 module.exports = sendQuoteEmail;
