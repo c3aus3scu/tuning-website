@@ -17,7 +17,7 @@ export default function Header() {
           <Link to="/services" className="hover:text-black dark:hover:text-white transition">Services</Link>
           <Link to="#" className="hover:text-black dark:hover:text-white transition">Blog</Link>
           <Link to="/about" className="hover:text-black dark:hover:text-white transition">About</Link>
-          <a href="/contact" className="hover:text-black dark:hover:text-white transition">Contact</a>
+          <Link to="/contact" className="hover:text-black dark:hover:text-white transition">Contact</Link>
         </nav>
 
         {/* Theme + Burger */}
@@ -39,9 +39,9 @@ export default function Header() {
           <nav className="flex flex-col gap-4 text-base font-medium text-gray-700 dark:text-gray-300">
             <Link to="/" onClick={() => setMenuOpen(false)} className="hover:text-black dark:hover:text-white">Home</Link>
             <Link to="/services" onClick={() => setMenuOpen(false)} className="hover:text-black dark:hover:text-white">Services</Link>
-            <a href="#regcheck" className="hover:text-black dark:hover:text-white">Reg Check</a>
-            <a href="#contact" className="hover:text-black dark:hover:text-white">Contact</a>
-            <a href="#why" className="hover:text-black dark:hover:text-white">Why Choose Us</a>
+            <Link to="#" onClick={() => setMenuOpen(false)} className="hover:text-black dark:hover:text-white">Blog</Link>
+            <Link to="/about" onClick={() => setMenuOpen(false)} className="hover:text-black dark:hover:text-white">About</Link>
+            <Link to="/contact" onClick={() => setMenuOpen(false)} className="hover:text-black dark:hover:text-white">Contact</Link>
           </nav>
         </div>
       )}
